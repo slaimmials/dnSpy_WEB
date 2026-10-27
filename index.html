@@ -1,1 +1,88 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>dnSpy Web</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="toolbar">
+  <span class="brand">dnSpy<span>Web</span></span>
+  <button id="btnOpen" title="Открыть dump.cs (Ctrl+O)">Открыть…</button>
+  <input id="fileInput" type="file" accept=".cs,.txt,text/plain" multiple hidden>
+  <span class="sep"></span>
+  <button id="btnBack" class="icon-btn" title="Назад (Alt+←)" disabled>&#8592;</button>
+  <button id="btnForward" class="icon-btn" title="Вперёд (Alt+→)" disabled>&#8594;</button>
+  <span class="sep"></span>
+  <button id="btnSearch" title="Поиск (Ctrl+Shift+K)">Поиск</button>
+  <span class="grow"></span>
+  <label class="toggle" title="Показывать блоки GenericInstMethod в коде"><input id="optGeneric" type="checkbox" checked> GenericInstMethod</label>
+</header>
 
+<main class="layout" id="layout">
+  <aside class="explorer" id="explorer">
+    <div class="pane-title">Assembly Explorer</div>
+    <div class="tree" id="tree" tabindex="0"></div>
+  </aside>
+  <div class="splitter-v" id="splitV"></div>
+  <section class="right" id="right">
+    <div class="editor" id="editor">
+      <div class="tabs" id="tabs"></div>
+      <div class="code" id="code" tabindex="0">
+        <div class="code-spacer" id="codeSpacer"></div>
+        <div class="code-lines" id="codeLines"></div>
+      </div>
+      <div class="welcome" id="welcome">
+        <div class="welcome-box">
+          <h1>dnSpy<span>Web</span></h1>
+          <p id="welcomeHint">Перетащите сюда <b>dump.cs</b> из Il2CppDumper или нажмите <a href="#" id="welcomeOpen">Открыть…</a></p>
+          <p id="welcomeLoaded" hidden>Выберите тип в Assembly Explorer слева или найдите его через поиск (Ctrl+Shift+K).</p>
+          <p class="muted">Файл обрабатывается только в браузере и никуда не отправляется.</p>
+          <table class="keys">
+            <tr><td>Ctrl+O</td><td>открыть файл</td></tr>
+            <tr><td>Ctrl+Shift+K</td><td>поиск по типам, членам и адресам</td></tr>
+            <tr><td>Alt+← / Alt+→</td><td>назад / вперёд</td></tr>
+            <tr><td>Ctrl+клик</td><td>открыть в новой вкладке</td></tr>
+            <tr><td>Средняя кнопка</td><td>закрыть вкладку</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="splitter-h" id="splitH" hidden></div>
+    <div class="search-pane" id="searchPane" hidden>
+      <div class="search-bar">
+        <span class="pane-label">Поиск</span>
+        <input id="searchInput" type="search" placeholder="Имя типа, члена, Type.Member или адрес 0x…" autocomplete="off" spellcheck="false">
+        <select id="searchKind">
+          <option value="all">Всё</option>
+          <option value="type">Типы</option>
+          <option value="method">Методы</option>
+          <option value="field">Поля</option>
+          <option value="prop">Свойства и события</option>
+          <option value="const">Константы</option>
+          <option value="addr">Адрес (RVA / Offset / VA)</option>
+        </select>
+        <label class="toggle"><input id="searchCase" type="checkbox"> Учитывать регистр</label>
+        <span class="search-count" id="searchCount"></span>
+        <button class="icon-btn" id="searchClose" title="Закрыть (Esc)">&#215;</button>
+      </div>
+      <div class="search-results" id="searchResults"></div>
+    </div>
+  </section>
+</main>
+
+<footer class="status" id="status">Готово</footer>
+
+<div class="drop" id="drop"><div>Отпустите файл, чтобы открыть</div></div>
+<div class="loading" id="loading" hidden>
+  <div class="loading-box">
+    <div id="loadingText">Загрузка…</div>
+    <div class="bar"><div id="loadingBar"></div></div>
+  </div>
+</div>
+
+<script src="parser.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
